@@ -6,5 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/tables")
 public class TableController {
+    private final TableService tableService;
 
+    public TableController(TableService tableService) {
+        this.tableService = tableService;
+    }
 }
