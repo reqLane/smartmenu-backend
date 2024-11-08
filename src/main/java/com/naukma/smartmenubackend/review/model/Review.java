@@ -1,5 +1,6 @@
 package com.naukma.smartmenubackend.review.model;
 
+import com.naukma.smartmenubackend.order.model.Order;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,4 +25,8 @@ public class Review {
 
     @Column(nullable = false)
     private Timestamp reviewTime;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
+    private Order order;
 }

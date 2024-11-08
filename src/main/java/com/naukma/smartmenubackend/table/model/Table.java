@@ -1,9 +1,13 @@
 package com.naukma.smartmenubackend.table.model;
 
+import com.naukma.smartmenubackend.order.model.Order;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -15,6 +19,6 @@ public class Table {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tableId;
 
-    @Column(nullable = false)
-    private Boolean occupied;
+    @OneToMany(mappedBy = "table")
+    private Set<Order> orders = new HashSet<>();
 }

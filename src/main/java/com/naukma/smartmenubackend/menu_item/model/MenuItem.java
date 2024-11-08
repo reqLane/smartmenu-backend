@@ -1,11 +1,13 @@
 package com.naukma.smartmenubackend.menu_item.model;
 
+import com.naukma.smartmenubackend.order_item.model.OrderItem;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -30,4 +32,7 @@ public class MenuItem {
 
     @Column(nullable = false)
     private Boolean availability;
+
+    @OneToMany(mappedBy = "menuItem")
+    private Set<OrderItem> orderItems;
 }
