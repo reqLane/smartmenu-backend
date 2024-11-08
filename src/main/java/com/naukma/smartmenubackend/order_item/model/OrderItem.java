@@ -14,4 +14,9 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderItemId;
+
+    @Column(nullable = false)
+    private Long quantity;
+
+    private String specialInstructions;
 }
