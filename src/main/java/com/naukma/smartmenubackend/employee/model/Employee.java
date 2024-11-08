@@ -2,6 +2,7 @@ package com.naukma.smartmenubackend.employee.model;
 
 import com.naukma.smartmenubackend.employee.role.EmployeeRole;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,10 @@ public class Employee implements UserDetails {
 
     @Column(nullable = false, length = 100)
     private String name;
+
+    @Column(unique = true, nullable = false, length = 100)
+    @Email(message = "INVALID USER EMAIL FORMAT")
+    private String email;
 
     @Column(nullable = false, length = 72)
     private String password;
