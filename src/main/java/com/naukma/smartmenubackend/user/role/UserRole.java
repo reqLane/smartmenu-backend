@@ -1,12 +1,12 @@
-package com.naukma.smartmenubackend.employee.role;
+package com.naukma.smartmenubackend.user.role;
 
-public enum EmployeeRole {
+public enum UserRole {
     ADMIN("ADMIN"),
-    WAITER("WAITER");
+    WAITER("OPERATOR");
 
     private String role;
 
-    EmployeeRole(String role) {
+    UserRole(String role) {
         this.role = role;
     }
 

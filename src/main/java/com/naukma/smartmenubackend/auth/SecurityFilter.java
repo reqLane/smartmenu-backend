@@ -1,6 +1,6 @@
 package com.naukma.smartmenubackend.auth;
 
-import com.naukma.smartmenubackend.employee.EmployeeService;
+import com.naukma.smartmenubackend.user.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,11 +15,11 @@ import java.io.IOException;
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
     private final TokenProvider tokenProvider;
-    private final EmployeeService employeeService;
+    private final UserService userService;
 
-    public SecurityFilter(TokenProvider tokenProvider, EmployeeService employeeService) {
+    public SecurityFilter(TokenProvider tokenProvider, UserService userService) {
         this.tokenProvider = tokenProvider;
-        this.employeeService = employeeService;
+        this.userService = userService;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             var email = tokenProvider.validateToken(token);
 
             if (email != null) {
-                var employee = employeeService.findByEmail(email).orElse(null);
+                var employee = userService.findByEmail(email).orElse(null);
 
                 if (employee != null) {
                     var authentication = new UsernamePasswordAuthenticationToken(employee, null, employee.getAuthorities());

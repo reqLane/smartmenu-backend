@@ -1,6 +1,6 @@
-package com.naukma.smartmenubackend.employee.model;
+package com.naukma.smartmenubackend.user.model;
 
-import com.naukma.smartmenubackend.employee.role.EmployeeRole;
+import com.naukma.smartmenubackend.user.role.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
@@ -17,14 +17,11 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "employees")
-public class Employee implements UserDetails {
+@Table(name = "users")
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long employeeId;
-
-    @Column(nullable = false, length = 100)
-    private String name;
+    private Long userId;
 
     @Column(unique = true, nullable = false, length = 100)
     @Email(message = "INVALID USER EMAIL FORMAT")
@@ -35,18 +32,18 @@ public class Employee implements UserDetails {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private EmployeeRole role;
+    private UserRole role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (getRole() == EmployeeRole.ADMIN)
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_WAITER"));
-        return List.of(new SimpleGrantedAuthority("ROLE_WAITER"));
+        if (getRole() == UserRole.ADMIN)
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_OPERATOR"));
+        return List.of(new SimpleGrantedAuthority("ROLE_OPERATOR"));
     }
 
     @Override
     public String getUsername() {
-        return getName() + "_" + getEmployeeId();
+        return getEmail();
     }
 
     @Override
