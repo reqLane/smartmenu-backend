@@ -27,6 +27,11 @@ public class Review {
     private Timestamp reviewTime;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", nullable = false)
     private Order order;
+
+    public Review(Long rating, Timestamp reviewTime) {
+        this.rating = rating;
+        this.reviewTime = reviewTime;
+    }
 }

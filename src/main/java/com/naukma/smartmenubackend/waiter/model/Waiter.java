@@ -24,4 +24,8 @@ public class Waiter {
 
     @OneToMany(mappedBy = "waiter")
     private Set<Order> orders = new HashSet<>();
+
+    public Waiter(String name) {
+        this.name = name;
+    }
 }

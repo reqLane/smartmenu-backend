@@ -30,9 +30,13 @@ public class MenuItem {
     @Column(length = 300)
     private String imageURL;
 
-    @Column(nullable = false)
-    private Boolean availability;
-
     @OneToMany(mappedBy = "menuItem")
     private Set<OrderItem> orderItems;
+
+    public MenuItem(String name, String description, BigDecimal price, String imageURL) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.imageURL = imageURL;
+    }
 }

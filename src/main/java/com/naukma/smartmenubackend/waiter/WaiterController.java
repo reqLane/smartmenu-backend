@@ -1,7 +1,9 @@
 package com.naukma.smartmenubackend.waiter;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.naukma.smartmenubackend.waiter.model.WaiterDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/waiters")
@@ -10,5 +12,22 @@ public class WaiterController {
 
     public WaiterController(WaiterService waiterService) {
         this.waiterService = waiterService;
+    }
+
+    @PostMapping
+    public ResponseEntity<WaiterDTO> create(@RequestBody WaiterDTO waiterDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(waiterService.createWaiter(waiterDTO));
+    }
+
+    @PatchMapping("/{waiterId}")
+    public ResponseEntity<WaiterDTO> edit(@PathVariable("waiterId") Long waiterId,
+                                            @RequestBody WaiterDTO waiterDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(waiterService.updateWaiter(waiterId, waiterDTO));
+    }
+
+    @DeleteMapping("/{waiterId}")
+    public ResponseEntity<Void> delete(@PathVariable("waiterId") Long waiterId) {
+        waiterService.deleteWaiter(waiterId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

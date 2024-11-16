@@ -1,11 +1,11 @@
 package com.naukma.smartmenubackend.review;
 
 import com.naukma.smartmenubackend.review.model.Review;
+import com.naukma.smartmenubackend.review.model.ReviewDTO;
+import com.naukma.smartmenubackend.utils.DTOMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ReviewService {
@@ -17,7 +17,13 @@ public class ReviewService {
 
     // BUSINESS LOGIC
 
-
+    public List<ReviewDTO> getAllReviews() {
+        return reviewRepo.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Review::getReviewTime).reversed())
+                .map(DTOMapper::toDTO)
+                .toList();
+    }
 
     // CRUD OPERATIONS
 

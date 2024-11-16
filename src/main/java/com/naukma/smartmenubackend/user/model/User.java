@@ -1,5 +1,6 @@
 package com.naukma.smartmenubackend.user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.naukma.smartmenubackend.user.role.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -28,6 +29,7 @@ public class User implements UserDetails {
     private String email;
 
     @Column(nullable = false, length = 72)
+    @JsonIgnore
     private String password;
 
     @Column(nullable = false)

@@ -1,6 +1,9 @@
 package com.naukma.smartmenubackend.waiter;
 
+import com.naukma.smartmenubackend.utils.DTOMapper;
 import com.naukma.smartmenubackend.waiter.model.Waiter;
+import com.naukma.smartmenubackend.waiter.model.WaiterDTO;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -17,7 +20,30 @@ public class WaiterService {
 
     // BUSINESS LOGIC
 
+    public WaiterDTO createWaiter(WaiterDTO waiterDTO) {
+        Waiter waiter = new Waiter(
+                waiterDTO.name()
+        );
+        Waiter savedWaiter = waiterRepo.save(waiter);
+        return DTOMapper.toDTO(savedWaiter);
+    }
 
+    public WaiterDTO updateWaiter(Long waiterId, WaiterDTO waiterDTO) {
+        Waiter waiter = findById(waiterId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("WAITER ID-%d NOT FOUND TO UPDATE.", waiterId)));
+
+        waiter.setName(waiterDTO.name());
+
+        Waiter updatedWaiter = waiterRepo.save(waiter);
+        return DTOMapper.toDTO(updatedWaiter);
+    }
+
+    public void deleteWaiter(Long waiterId) {
+        Waiter waiter = findById(waiterId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("WAITER ID-%d NOT FOUND TO DELETE.", waiterId)));
+
+        delete(waiter);
+    }
 
     // CRUD OPERATIONS
 
