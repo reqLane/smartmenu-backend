@@ -3,9 +3,7 @@ package com.naukma.smartmenubackend.review;
 import com.naukma.smartmenubackend.review.model.ReviewDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,8 +16,13 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
+    @PostMapping("")
+    public ResponseEntity<ReviewDTO> create(@RequestBody ReviewDTO reviewDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(reviewService.createReview(reviewDTO));
+    }
+
     @GetMapping("")
-    public ResponseEntity<List<ReviewDTO>> getAllReviews() {
+    public ResponseEntity<List<ReviewDTO>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(reviewService.getAllReviews());
     }
 }

@@ -36,7 +36,9 @@ public class DTOMapper {
     public static ReviewDTO toDTO(Review review) {
         return new ReviewDTO(
                 review.getReviewId(),
+                review.getOrder().getTable().getTableId(),
                 review.getRating(),
+                review.getComment(),
                 review.getReviewTime()
         );
     }

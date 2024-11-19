@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Range;
 
 import java.sql.Timestamp;
@@ -23,17 +24,18 @@ public class Review {
     @Range(min = 1, max = 5)
     private Long rating;
 
-    @Column(nullable = false)
-    private Timestamp reviewTime;
-
     private String comment;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_id", nullable = false)
+    @Column(nullable = false)
+    @CreationTimestamp
+    private Timestamp reviewTime;
+
+    @OneToOne(mappedBy = "review")
     private Order order;
 
-    public Review(Long rating, Timestamp reviewTime) {
+    public Review(Long rating, String comment, Order order) {
         this.rating = rating;
-        this.reviewTime = reviewTime;
+        this.comment = comment;
+        this.order = order;
     }
 }

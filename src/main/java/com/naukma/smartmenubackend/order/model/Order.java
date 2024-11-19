@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -26,18 +27,20 @@ public class Order {
     private Long orderId;
 
     @Column(nullable = false)
+    @CreationTimestamp
     private Timestamp orderTime;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private OrderStatus status;
+    private OrderStatus status = OrderStatus.PENDING;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal totalAmount;
 
     private Timestamp paymentTime;
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "review_id")
     private Review review;
 
     @ManyToOne
@@ -51,21 +54,16 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private Set<OrderItem> orderItems = new HashSet<>();
 
+    public Order(Waiter waiter, Table table) {
+        this.waiter = waiter;
+        this.table = table;
+    }
+
     public void calculatePrice() {
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (OrderItem orderItem : orderItems) {
             totalAmount = totalAmount.add(orderItem.getMenuItem().getPrice().multiply(new BigDecimal(orderItem.getQuantity())));
         }
         setTotalAmount(totalAmount);
-    }
-
-    @PrePersist
-    public void prePersist() {
-        if (orderTime == null) {
-            setOrderTime(new Timestamp(System.currentTimeMillis()));
-        }
-        if (status == null) {
-            setStatus(OrderStatus.PENDING);
-        }
     }
 }

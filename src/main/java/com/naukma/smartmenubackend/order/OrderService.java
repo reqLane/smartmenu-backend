@@ -5,19 +5,19 @@ import com.naukma.smartmenubackend.menu_item.MenuItemService;
 import com.naukma.smartmenubackend.menu_item.model.MenuItem;
 import com.naukma.smartmenubackend.order.model.Order;
 import com.naukma.smartmenubackend.order.model.OrderDTO;
+import com.naukma.smartmenubackend.order.status.OrderStatus;
 import com.naukma.smartmenubackend.order_item.OrderItemService;
 import com.naukma.smartmenubackend.order_item.model.OrderItem;
 import com.naukma.smartmenubackend.order_item.model.OrderItemDTO;
 import com.naukma.smartmenubackend.table.TableService;
+import com.naukma.smartmenubackend.table.model.Table;
 import com.naukma.smartmenubackend.utils.DTOMapper;
 import com.naukma.smartmenubackend.waiter.WaiterService;
+import com.naukma.smartmenubackend.waiter.model.Waiter;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static com.naukma.smartmenubackend.utils.Utils.isNullOrEmpty;
 
@@ -47,7 +47,12 @@ public class OrderService {
         if (isNullOrEmpty(orderDTO.orderItems()))
             throw new InvalidOrderDataException("CAN'T CREATE EMPTY ORDER");
 
-        Order order = new Order();
+        Waiter waiter = waiterService.findById(orderDTO.waiterId())
+                .orElseThrow(() -> new EntityNotFoundException(String.format("WAITER ID-%d NOT FOUND TO CREATE ORDER", orderDTO.waiterId())));
+        Table table = tableService.findById(orderDTO.tableId())
+                .orElseThrow(() -> new EntityNotFoundException(String.format("TABLE ID-%d NOT FOUND TO CREATE ORDER", orderDTO.tableId())));
+
+        Order order = new Order(waiter, table);
         for (OrderItemDTO orderItemDTO : orderDTO.orderItems()) {
             MenuItem menuItem = menuItemService.findById(orderItemDTO.menuItemId())
                     .orElseThrow(() -> new EntityNotFoundException(String.format("MENU ITEM ID-%d NOT FOUND", orderItemDTO.menuItemId())));
@@ -61,6 +66,43 @@ public class OrderService {
         List<OrderItem> orderItemsSaved = orderItemService.saveAll(order.getOrderItems());
 
         return DTOMapper.toDTO(order);
+    }
+
+    public OrderDTO cancelOrder(Long orderId) {
+        Order order = findById(orderId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("ORDER ID-%d NOT FOUND TO CANCEL", orderId)));
+        if (order.getStatus() != OrderStatus.PENDING)
+            throw new InvalidOrderDataException(String.format("ORDER ID-%d IS %s, CAN'T CANCEL IT", orderId, order.getStatus()));
+
+        order.setStatus(OrderStatus.CANCELLED);
+
+        order = orderRepo.save(order);
+        return DTOMapper.toDTO(order);
+    }
+
+    public List<OrderDTO> getPendingOrders() {
+        return findAll()
+                .stream()
+                .filter(order -> order.getStatus() == OrderStatus.PENDING)
+                .sorted(Comparator.comparing(Order::getOrderTime))
+                .map(DTOMapper::toDTO)
+                .toList();
+    }
+
+    public List<OrderDTO> getActiveOrders() {
+        return findAll()
+                .stream()
+                .filter(order -> order.getStatus() == OrderStatus.PENDING || order.getStatus() == OrderStatus.COOKED)
+                .sorted(Comparator.comparing(Order::getOrderTime))
+                .map(DTOMapper::toDTO)
+                .toList();
+    }
+
+    public Optional<Order> getActiveOrderByTableId(Long tableId) {
+        return findAll()
+                .stream()
+                .filter(order -> order.getTable().getTableId().equals(tableId) || order.getStatus() == OrderStatus.COMPLETED)
+                .max(Comparator.comparing(Order::getOrderTime));
     }
 
     // CRUD OPERATIONS
