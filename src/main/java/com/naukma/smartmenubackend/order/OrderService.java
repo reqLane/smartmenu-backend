@@ -51,6 +51,8 @@ public class OrderService {
                 .orElseThrow(() -> new EntityNotFoundException(String.format("WAITER ID-%d NOT FOUND TO CREATE ORDER", orderDTO.waiterId())));
         Table table = tableService.findById(orderDTO.tableId())
                 .orElseThrow(() -> new EntityNotFoundException(String.format("TABLE ID-%d NOT FOUND TO CREATE ORDER", orderDTO.tableId())));
+        if (tableService.hasActiveOrder(table.getTableId()))
+            throw new InvalidOrderDataException(String.format("TABLE ID-%d ALREADY ACTIVE, CAN'T CREATE ORDERS UNTIL COMPLETED OR CANCELLED", table.getTableId()));
 
         Order order = new Order(waiter, table);
         for (OrderItemDTO orderItemDTO : orderDTO.orderItems()) {

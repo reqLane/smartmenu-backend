@@ -1,5 +1,7 @@
 package com.naukma.smartmenubackend.table;
 
+import com.naukma.smartmenubackend.order.OrderService;
+import com.naukma.smartmenubackend.order.status.OrderStatus;
 import com.naukma.smartmenubackend.table.model.Table;
 import com.naukma.smartmenubackend.table.model.TableDTO;
 import com.naukma.smartmenubackend.utils.DTOMapper;
@@ -11,9 +13,11 @@ import java.util.*;
 @Service
 public class TableService {
     private final TableRepo tableRepo;
+    private final OrderService orderService;
 
-    public TableService(TableRepo tableRepo) {
+    public TableService(TableRepo tableRepo, OrderService orderService) {
         this.tableRepo = tableRepo;
+        this.orderService = orderService;
     }
 
     // BUSINESS LOGIC
@@ -31,6 +35,21 @@ public class TableService {
                 .orElseThrow(() -> new EntityNotFoundException("TABLES NOT FOUND TO DELETE"));
 
         deleteById(lastTableId);
+    }
+
+    public List<TableDTO> getAllTables() {
+        return findAll()
+                .stream()
+                .sorted(Comparator.comparing(Table::getTableId))
+                .map(DTOMapper::toDTO)
+                .toList();
+    }
+
+    public Boolean hasActiveOrder(Long tableId) {
+        return orderService.findAll()
+                .stream()
+                .filter(order -> order.getTable().getTableId().equals(tableId))
+                .anyMatch(order -> order.getStatus() == OrderStatus.PENDING || order.getStatus() == OrderStatus.COOKED);
     }
 
     private Long findNextAvailableId() {

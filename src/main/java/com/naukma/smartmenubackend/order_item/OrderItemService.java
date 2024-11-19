@@ -1,6 +1,10 @@
 package com.naukma.smartmenubackend.order_item;
 
+import com.naukma.smartmenubackend.exception.InvalidOrderItemDataException;
 import com.naukma.smartmenubackend.order_item.model.OrderItem;
+import com.naukma.smartmenubackend.order_item.model.OrderItemDTO;
+import com.naukma.smartmenubackend.utils.DTOMapper;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -18,7 +22,17 @@ public class OrderItemService {
 
     // BUSINESS LOGIC
 
+    public OrderItemDTO markOrderItemAsDone(Long orderItemId) {
+        OrderItem orderItem = orderItemRepo.findById(orderItemId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("ORDER ITEM ID-%d NOT FOUND TO MARK AS DONE", orderItemId)));
+        if (orderItem.getIsDone())
+            throw new InvalidOrderItemDataException(String.format("ORDER ITEM ID-%d IS ALREADY DONE", orderItemId));
 
+        orderItem.setIsDone(true);
+
+        orderItem = save(orderItem);
+        return DTOMapper.toDTO(orderItem);
+    }
 
     // CRUD OPERATIONS
 

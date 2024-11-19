@@ -7,9 +7,7 @@ import com.naukma.smartmenubackend.waiter.model.WaiterDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static com.naukma.smartmenubackend.utils.Utils.isNullOrEmpty;
 
@@ -51,6 +49,14 @@ public class WaiterService {
                 .orElseThrow(() -> new EntityNotFoundException(String.format("WAITER ID-%d NOT FOUND TO DELETE", waiterId)));
 
         delete(waiter);
+    }
+
+    public List<WaiterDTO> getAllWaiters() {
+        return findAll()
+                .stream()
+                .sorted(Comparator.comparing(Waiter::getName))
+                .map(DTOMapper::toDTO)
+                .toList();
     }
 
     // CRUD OPERATIONS

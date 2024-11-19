@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/waiters")
 public class WaiterController {
@@ -29,5 +31,10 @@ public class WaiterController {
     public ResponseEntity<Void> delete(@PathVariable("waiterId") Long waiterId) {
         waiterService.deleteWaiter(waiterId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<WaiterDTO>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(waiterService.getAllWaiters());
     }
 }

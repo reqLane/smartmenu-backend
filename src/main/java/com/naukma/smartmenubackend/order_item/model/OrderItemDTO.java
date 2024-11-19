@@ -4,6 +4,7 @@ public record OrderItemDTO(
         Long orderItemId,
         Long menuItemId,
         Long quantity,
-        String specialInstructions
+        String specialInstructions,
+        Boolean isDone
 ) {
 }
