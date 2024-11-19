@@ -1,7 +1,9 @@
 package com.naukma.smartmenubackend.table;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.naukma.smartmenubackend.table.model.TableDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/tables")
@@ -10,5 +12,16 @@ public class TableController {
 
     public TableController(TableService tableService) {
         this.tableService = tableService;
+    }
+
+    @PostMapping("")
+    public ResponseEntity<TableDTO> create() {
+        return ResponseEntity.status(HttpStatus.CREATED).body(tableService.createTable());
+    }
+
+    @DeleteMapping("")
+    public ResponseEntity<Void> delete() {
+        tableService.deleteTable();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

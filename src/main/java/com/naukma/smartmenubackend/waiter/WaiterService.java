@@ -1,5 +1,6 @@
 package com.naukma.smartmenubackend.waiter;
 
+import com.naukma.smartmenubackend.exception.InvalidWaiterDataException;
 import com.naukma.smartmenubackend.utils.DTOMapper;
 import com.naukma.smartmenubackend.waiter.model.Waiter;
 import com.naukma.smartmenubackend.waiter.model.WaiterDTO;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
+import static com.naukma.smartmenubackend.utils.Utils.isNullOrEmpty;
 
 @Service
 public class WaiterService {
@@ -21,26 +24,31 @@ public class WaiterService {
     // BUSINESS LOGIC
 
     public WaiterDTO createWaiter(WaiterDTO waiterDTO) {
+        if (isNullOrEmpty(waiterDTO.name()))
+            throw new InvalidWaiterDataException("WAITER REQUIRED FIELD IS EMPTY");
+
         Waiter waiter = new Waiter(
                 waiterDTO.name()
         );
-        Waiter savedWaiter = waiterRepo.save(waiter);
-        return DTOMapper.toDTO(savedWaiter);
+
+        waiter = waiterRepo.save(waiter);
+        return DTOMapper.toDTO(waiter);
     }
 
     public WaiterDTO updateWaiter(Long waiterId, WaiterDTO waiterDTO) {
         Waiter waiter = findById(waiterId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("WAITER ID-%d NOT FOUND TO UPDATE.", waiterId)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("WAITER ID-%d NOT FOUND TO UPDATE", waiterId)));
 
-        waiter.setName(waiterDTO.name());
+        if (isNullOrEmpty(waiterDTO.name()))
+            waiter.setName(waiterDTO.name());
 
-        Waiter updatedWaiter = waiterRepo.save(waiter);
-        return DTOMapper.toDTO(updatedWaiter);
+        waiter = waiterRepo.save(waiter);
+        return DTOMapper.toDTO(waiter);
     }
 
     public void deleteWaiter(Long waiterId) {
         Waiter waiter = findById(waiterId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("WAITER ID-%d NOT FOUND TO DELETE.", waiterId)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("WAITER ID-%d NOT FOUND TO DELETE", waiterId)));
 
         delete(waiter);
     }

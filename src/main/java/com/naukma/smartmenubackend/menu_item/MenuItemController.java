@@ -14,7 +14,7 @@ public class MenuItemController {
         this.menuItemService = menuItemService;
     }
 
-    @PostMapping
+    @PostMapping("")
     public ResponseEntity<MenuItemDTO> create(@RequestBody MenuItemDTO menuItemDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(menuItemService.createMenuItem(menuItemDTO));
     }

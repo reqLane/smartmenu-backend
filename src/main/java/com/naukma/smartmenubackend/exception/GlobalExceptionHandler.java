@@ -26,6 +26,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap(List.of(e.getMessage())));
     }
 
+    @ExceptionHandler(InvalidEntityDataException.class)
+    public final ResponseEntity<Map<String, String>> handleInvalidEntityDataExceptions(InvalidEntityDataException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap(List.of(e.getMessage())));
+    }
+
     @ExceptionHandler(EntityNotFoundException.class)
     public final ResponseEntity<Map<String, String>> handleEntityNotFoundExceptions(EntityNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMap(List.of(e.getMessage())));
@@ -42,7 +47,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public final ResponseEntity<Map<String, String>> handleEntityNotFoundExceptions(DataIntegrityViolationException e) {
+    public final ResponseEntity<Map<String, String>> handleDataIntegrityViolationExceptions(DataIntegrityViolationException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorMap(List.of(e.getMessage())));
     }
 

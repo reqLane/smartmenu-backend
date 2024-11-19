@@ -1,9 +1,10 @@
 package com.naukma.smartmenubackend.order.status;
 
 public enum OrderStatus {
-    COMPLETED("Completed"),
-    PENDING("Pending"),
-    CANCELLED("Cancelled");
+    PENDING("PENDING"),
+    COOKED("COOKED"),
+    COMPLETED("COMPLETED"),
+    CANCELLED("CANCELLED");
 
     private final String status;
 

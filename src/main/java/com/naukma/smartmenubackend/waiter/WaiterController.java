@@ -14,7 +14,7 @@ public class WaiterController {
         this.waiterService = waiterService;
     }
 
-    @PostMapping
+    @PostMapping("")
     public ResponseEntity<WaiterDTO> create(@RequestBody WaiterDTO waiterDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(waiterService.createWaiter(waiterDTO));
     }

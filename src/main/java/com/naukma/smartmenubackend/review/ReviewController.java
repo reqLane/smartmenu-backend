@@ -18,7 +18,7 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    @GetMapping
+    @GetMapping("")
     public ResponseEntity<List<ReviewDTO>> getAllReviews() {
         return ResponseEntity.status(HttpStatus.OK).body(reviewService.getAllReviews());
     }

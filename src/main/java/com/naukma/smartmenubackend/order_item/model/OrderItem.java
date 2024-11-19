@@ -32,4 +32,18 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "menu_item_id", nullable = false)
     private MenuItem menuItem;
+
+    public OrderItem(Long quantity, String specialInstructions, Order order, MenuItem menuItem) {
+        this.quantity = quantity;
+        this.specialInstructions = specialInstructions;
+        this.order = order;
+        this.menuItem = menuItem;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (isDone == null) {
+            isDone = false;
+        }
+    }
 }

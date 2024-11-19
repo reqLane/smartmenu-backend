@@ -29,12 +29,17 @@ public class User implements UserDetails {
     private String email;
 
     @Column(nullable = false, length = 72)
-    @JsonIgnore
     private String password;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    public User(String email, String password, UserRole role) {
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

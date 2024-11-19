@@ -1,11 +1,12 @@
 package com.naukma.smartmenubackend.table;
 
 import com.naukma.smartmenubackend.table.model.Table;
+import com.naukma.smartmenubackend.table.model.TableDTO;
+import com.naukma.smartmenubackend.utils.DTOMapper;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class TableService {
@@ -17,7 +18,39 @@ public class TableService {
 
     // BUSINESS LOGIC
 
+    public TableDTO createTable() {
+        Table table = new Table();
+        table.setTableId(findNextAvailableId());
 
+        table = save(table);
+        return DTOMapper.toDTO(table);
+    }
+
+    public void deleteTable() {
+        Long lastTableId = findLastTableId()
+                .orElseThrow(() -> new EntityNotFoundException("TABLES NOT FOUND TO DELETE"));
+
+        deleteById(lastTableId);
+    }
+
+    private Long findNextAvailableId() {
+        List<Long> existingTableIds = findAll()
+                .stream()
+                .map(Table::getTableId)
+                .toList();
+        Long nextId = 1L;
+        while (existingTableIds.contains(nextId)) {
+            nextId++;
+        }
+        return nextId;
+    }
+
+    private Optional<Long> findLastTableId() {
+        return findAll()
+                .stream()
+                .map(Table::getTableId)
+                .max(Long::compareTo);
+    }
 
     // CRUD OPERATIONS
 

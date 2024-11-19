@@ -26,6 +26,8 @@ public class Review {
     @Column(nullable = false)
     private Timestamp reviewTime;
 
+    private String comment;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;

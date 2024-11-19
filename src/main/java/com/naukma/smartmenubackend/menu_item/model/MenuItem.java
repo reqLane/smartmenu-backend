@@ -22,12 +22,13 @@ public class MenuItem {
     @Column(unique = true, nullable = false, length = 100)
     private String name;
 
+    @Column(nullable = false)
     private String description;
 
     @Column(nullable = false, precision = 6, scale = 2)
     private BigDecimal price;
 
-    @Column(length = 300)
+    @Column(nullable = false, length = 300)
     private String imageURL;
 
     @OneToMany(mappedBy = "menuItem")

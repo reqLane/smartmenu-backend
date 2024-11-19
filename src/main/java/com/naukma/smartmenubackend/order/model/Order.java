@@ -50,4 +50,22 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private Set<OrderItem> orderItems = new HashSet<>();
+
+    public void calculatePrice() {
+        BigDecimal totalAmount = BigDecimal.ZERO;
+        for (OrderItem orderItem : orderItems) {
+            totalAmount = totalAmount.add(orderItem.getMenuItem().getPrice().multiply(new BigDecimal(orderItem.getQuantity())));
+        }
+        setTotalAmount(totalAmount);
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (orderTime == null) {
+            setOrderTime(new Timestamp(System.currentTimeMillis()));
+        }
+        if (status == null) {
+            setStatus(OrderStatus.PENDING);
+        }
+    }
 }

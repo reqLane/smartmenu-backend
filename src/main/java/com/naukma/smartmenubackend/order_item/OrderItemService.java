@@ -4,6 +4,7 @@ import com.naukma.smartmenubackend.order_item.model.OrderItem;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -31,6 +32,10 @@ public class OrderItemService {
 
     public OrderItem save(OrderItem orderItem) {
         return orderItemRepo.save(orderItem);
+    }
+
+    public List<OrderItem> saveAll(Iterable<OrderItem> orderItems) {
+        return orderItemRepo.saveAll(orderItems);
     }
 
     public void deleteById(Long id) {
