@@ -53,7 +53,7 @@ public class MenuItemService {
         if (menuItemDTO.price() != null)
             menuItem.setPrice(menuItemDTO.price());
         if (!isNullOrEmpty(menuItemDTO.imageURL()))
-            menuItem.setImageURL(menuItemDTO.imageURL());
+            menuItem.setImageUrl(menuItemDTO.imageURL());
 
         menuItem = menuItemRepo.save(menuItem);
         return DTOMapper.toDTO(menuItem);

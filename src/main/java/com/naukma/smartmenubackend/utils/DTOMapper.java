@@ -24,7 +24,7 @@ public class DTOMapper {
                 menuItem.getName(),
                 menuItem.getDescription(),
                 menuItem.getPrice(),
-                menuItem.getImageURL()
+                menuItem.getImageUrl()
         );
     }
     public static WaiterDTO toDTO(Waiter waiter) {

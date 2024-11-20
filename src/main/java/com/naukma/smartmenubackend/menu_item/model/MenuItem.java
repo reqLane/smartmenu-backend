@@ -29,15 +29,15 @@ public class MenuItem {
     private BigDecimal price;
 
     @Column(nullable = false, length = 300)
-    private String imageURL;
+    private String imageUrl;
 
     @OneToMany(mappedBy = "menuItem")
     private Set<OrderItem> orderItems;
 
-    public MenuItem(String name, String description, BigDecimal price, String imageURL) {
+    public MenuItem(String name, String description, BigDecimal price, String imageUrl) {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.imageURL = imageURL;
+        this.imageUrl = imageUrl;
     }
 }
