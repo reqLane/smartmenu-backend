@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorMap(List.of(e.getMessage())));
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
+    @ExceptionHandler(DataIntegrityViolationException.class)
     public final ResponseEntity<Map<String, String>> handleDataIntegrityViolationExceptions(DataIntegrityViolationException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorMap(List.of(e.getMessage())));
     }
