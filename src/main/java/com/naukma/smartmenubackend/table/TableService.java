@@ -27,17 +27,9 @@ public class TableService {
 
     public TableDTO createTable() {
         Table table = new Table();
-        table.setTableId(findNextAvailableId());
 
         table = save(table);
         return DTOMapper.toDTO(table);
-    }
-
-    public void deleteTable() {
-        Long lastTableId = findLastTableId()
-                .orElseThrow(() -> new EntityNotFoundException("TABLES NOT FOUND TO DELETE"));
-
-        deleteById(lastTableId);
     }
 
     public List<TableDTO> getAllTables() {
@@ -65,25 +57,6 @@ public class TableService {
                 .max(Comparator.comparing(Order::getOrderTime))
                 .orElseThrow(() -> new EntityNotFoundException(String.format("TABLE ID-%d DOESN'T HAVE ACTIVE ORDER", tableId)));
         return DTOMapper.toDTO(activeOrder);
-    }
-
-    private Long findNextAvailableId() {
-        List<Long> existingTableIds = findAll()
-                .stream()
-                .map(Table::getTableId)
-                .toList();
-        Long nextId = 1L;
-        while (existingTableIds.contains(nextId)) {
-            nextId++;
-        }
-        return nextId;
-    }
-
-    private Optional<Long> findLastTableId() {
-        return findAll()
-                .stream()
-                .map(Table::getTableId)
-                .max(Long::compareTo);
     }
 
     // CRUD OPERATIONS

@@ -22,12 +22,6 @@ public class TableController {
         return ResponseEntity.status(HttpStatus.CREATED).body(tableService.createTable());
     }
 
-    @DeleteMapping("")
-    public ResponseEntity<Void> delete() {
-        tableService.deleteTable();
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
     @GetMapping("")
     public ResponseEntity<List<TableDTO>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(tableService.getAllTables());

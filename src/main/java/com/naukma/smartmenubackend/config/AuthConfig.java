@@ -49,7 +49,6 @@ public class AuthConfig {
                         .requestMatchers(HttpMethod.GET, "api/reviews").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.POST, "api/tables").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "api/tables").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "api/tables").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "api/tables/{tableId}/has-active-order").permitAll()
                         .requestMatchers(HttpMethod.GET, "api/tables/{tableId}/get-active-order").permitAll()
