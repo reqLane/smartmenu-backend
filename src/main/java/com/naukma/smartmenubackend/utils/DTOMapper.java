@@ -58,7 +58,7 @@ public class DTOMapper {
                 order.getStatus(),
                 order.getTotalAmount(),
                 order.getPaymentTime(),
-                order.getReview().getReviewId(),
+                order.getReview() == null ? null : order.getReview().getReviewId(),
                 order.getWaiter().getWaiterId(),
                 order.getTable().getTableId(),
                 order.getOrderItems()
