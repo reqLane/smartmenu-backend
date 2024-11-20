@@ -39,7 +39,8 @@ public class DTOMapper {
                 review.getOrder().getTable().getTableId(),
                 review.getRating(),
                 review.getComment(),
-                review.getReviewTime()
+                review.getReviewTime(),
+                review.getOrder().getWaiter().getName()
         );
     }
     public static OrderItemDTO toDTO(OrderItem orderItem) {

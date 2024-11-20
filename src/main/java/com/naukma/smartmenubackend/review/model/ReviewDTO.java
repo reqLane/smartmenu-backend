@@ -7,6 +7,7 @@ public record ReviewDTO(
         Long tableId,
         Long rating,
         String comment,
-        Timestamp reviewTime
+        Timestamp reviewTime,
+        String waiterName
 ) {
 }
