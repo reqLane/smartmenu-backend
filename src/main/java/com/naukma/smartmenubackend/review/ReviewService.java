@@ -34,6 +34,8 @@ public class ReviewService {
         Review review = new Review(reviewDTO.rating(), reviewDTO.comment(), order);
 
         review = save(review);
+        order.setReview(review);
+        orderService.save(order);
         return DTOMapper.toDTO(review);
     }
 

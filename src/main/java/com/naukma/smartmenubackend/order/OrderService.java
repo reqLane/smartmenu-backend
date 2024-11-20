@@ -115,7 +115,7 @@ public class OrderService {
     public Optional<Order> getActiveOrderByTableId(Long tableId) {
         return findAll()
                 .stream()
-                .filter(order -> order.getTable().getTableId().equals(tableId) || order.getStatus() == OrderStatus.COMPLETED)
+                .filter(order -> order.getTable().getTableId().equals(tableId) && order.getStatus() == OrderStatus.COMPLETED)
                 .max(Comparator.comparing(Order::getOrderTime));
     }
 
