@@ -2,7 +2,7 @@ package com.naukma.smartmenubackend.user.role;
 
 public enum UserRole {
     ADMIN("ADMIN"),
-    WAITER("OPERATOR");
+    OPERATOR("OPERATOR");
 
     private String role;
 
