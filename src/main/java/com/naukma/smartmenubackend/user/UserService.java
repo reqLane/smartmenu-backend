@@ -9,9 +9,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static com.naukma.smartmenubackend.utils.Utils.isNullOrEmpty;
 
@@ -64,6 +62,14 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException(String.format("USER ID-%d NOT FOUND TO DELETE", userId)));
 
         delete(user);
+    }
+
+    public List<UserDTO> getAllUsers() {
+        return findAll()
+                .stream()
+                .sorted(Comparator.comparingLong(User::getUserId))
+                .map(DTOMapper::toDTO)
+                .toList();
     }
 
     // CRUD OPERATIONS
