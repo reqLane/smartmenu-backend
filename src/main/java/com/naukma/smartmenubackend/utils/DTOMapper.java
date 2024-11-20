@@ -48,7 +48,8 @@ public class DTOMapper {
                 orderItem.getMenuItem().getMenuItemId(),
                 orderItem.getQuantity(),
                 orderItem.getSpecialInstructions(),
-                orderItem.getIsDone()
+                orderItem.getIsDone(),
+                orderItem.getMenuItem().getName()
         );
     }
     public static OrderDTO toDTO(Order order) {
