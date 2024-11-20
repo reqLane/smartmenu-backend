@@ -23,7 +23,7 @@ public class OrderItem {
     private String specialInstructions;
 
     @Column(nullable = false)
-    private Boolean isDone;
+    private Boolean isDone = false;
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
@@ -38,12 +38,5 @@ public class OrderItem {
         this.specialInstructions = specialInstructions;
         this.order = order;
         this.menuItem = menuItem;
-    }
-
-    @PrePersist
-    public void prePersist() {
-        if (isDone == null) {
-            isDone = false;
-        }
     }
 }
