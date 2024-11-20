@@ -1,5 +1,6 @@
 package com.naukma.smartmenubackend.table;
 
+import com.naukma.smartmenubackend.order.OrderRepo;
 import com.naukma.smartmenubackend.order.OrderService;
 import com.naukma.smartmenubackend.order.status.OrderStatus;
 import com.naukma.smartmenubackend.table.model.Table;
@@ -13,11 +14,11 @@ import java.util.*;
 @Service
 public class TableService {
     private final TableRepo tableRepo;
-    private final OrderService orderService;
+    private final OrderRepo orderRepo;
 
-    public TableService(TableRepo tableRepo, OrderService orderService) {
+    public TableService(TableRepo tableRepo, OrderRepo orderRepo) {
         this.tableRepo = tableRepo;
-        this.orderService = orderService;
+        this.orderRepo = orderRepo;
     }
 
     // BUSINESS LOGIC
@@ -46,7 +47,7 @@ public class TableService {
     }
 
     public Boolean hasActiveOrder(Long tableId) {
-        return orderService.findAll()
+        return orderRepo.findAll()
                 .stream()
                 .filter(order -> order.getTable().getTableId().equals(tableId))
                 .anyMatch(order -> order.getStatus() == OrderStatus.PENDING || order.getStatus() == OrderStatus.COOKED);
