@@ -21,6 +21,11 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(orderDTO));
     }
 
+    @PatchMapping("/{orderId}/pay")
+    public ResponseEntity<OrderDTO> pay(@PathVariable("orderId") Long orderId) {
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.payOrder(orderId));
+    }
+
     @PatchMapping("/{orderId}/cancel")
     public ResponseEntity<OrderDTO> cancel(@PathVariable("orderId") Long orderId) {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.cancelOrder(orderId));

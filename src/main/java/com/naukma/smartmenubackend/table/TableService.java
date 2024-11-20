@@ -2,6 +2,8 @@ package com.naukma.smartmenubackend.table;
 
 import com.naukma.smartmenubackend.order.OrderRepo;
 import com.naukma.smartmenubackend.order.OrderService;
+import com.naukma.smartmenubackend.order.model.Order;
+import com.naukma.smartmenubackend.order.model.OrderDTO;
 import com.naukma.smartmenubackend.order.status.OrderStatus;
 import com.naukma.smartmenubackend.table.model.Table;
 import com.naukma.smartmenubackend.table.model.TableDTO;
@@ -51,6 +53,18 @@ public class TableService {
                 .stream()
                 .filter(order -> order.getTable().getTableId().equals(tableId))
                 .anyMatch(order -> order.getStatus() == OrderStatus.PENDING || order.getStatus() == OrderStatus.COOKED);
+    }
+
+    public OrderDTO getActiveOrder(Long tableId) {
+        Order activeOrder = findAll()
+                .stream()
+                .filter(table -> table.getTableId().equals(tableId))
+                .map(Table::getOrders)
+                .flatMap(Collection::stream)
+                .filter(order -> order.getStatus() == OrderStatus.PENDING || order.getStatus() == OrderStatus.COOKED)
+                .max(Comparator.comparing(Order::getOrderTime))
+                .orElseThrow(() -> new EntityNotFoundException(String.format("TABLE ID-%d DOESN'T HAVE ACTIVE ORDER", tableId)));
+        return DTOMapper.toDTO(activeOrder);
     }
 
     private Long findNextAvailableId() {

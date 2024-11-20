@@ -1,5 +1,6 @@
 package com.naukma.smartmenubackend.table;
 
+import com.naukma.smartmenubackend.order.model.OrderDTO;
 import com.naukma.smartmenubackend.table.model.TableDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,5 +36,10 @@ public class TableController {
     @GetMapping("/{tableId}/has-active-order")
     public ResponseEntity<Boolean> hasActiveOrder(@PathVariable Long tableId) {
         return ResponseEntity.status(HttpStatus.OK).body(tableService.hasActiveOrder(tableId));
+    }
+
+    @GetMapping("/{tableId}/get-active-order")
+    public ResponseEntity<OrderDTO> getActiveOrder(@PathVariable Long tableId) {
+        return ResponseEntity.status(HttpStatus.OK).body(tableService.getActiveOrder(tableId));
     }
 }

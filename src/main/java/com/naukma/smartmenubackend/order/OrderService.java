@@ -17,6 +17,7 @@ import com.naukma.smartmenubackend.waiter.model.Waiter;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 import static com.naukma.smartmenubackend.utils.Utils.isNullOrEmpty;
@@ -67,6 +68,17 @@ public class OrderService {
         order = orderRepo.save(order);
         List<OrderItem> orderItemsSaved = orderItemService.saveAll(order.getOrderItems());
 
+        return DTOMapper.toDTO(order);
+    }
+
+    public OrderDTO payOrder(Long orderId) {
+        Order order = findById(orderId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("ORDER ID-%d NOT FOUND TO PAY", orderId)));
+
+        order.setPaymentTime(new Timestamp(System.currentTimeMillis()));
+        order.setStatus(OrderStatus.COMPLETED);
+
+        order = save(order);
         return DTOMapper.toDTO(order);
     }
 
