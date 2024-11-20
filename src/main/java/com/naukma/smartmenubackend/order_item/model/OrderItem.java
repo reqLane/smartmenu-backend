@@ -26,11 +26,11 @@ public class OrderItem {
     private Boolean isDone = false;
 
     @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
+    @JoinColumn(name = "order_id_fk", nullable = false)
     private Order order;
 
     @ManyToOne
-    @JoinColumn(name = "menu_item_id", nullable = false)
+    @JoinColumn(name = "menu_item_id_fk", nullable = false)
     private MenuItem menuItem;
 
     public OrderItem(Long quantity, String specialInstructions, Order order, MenuItem menuItem) {

@@ -40,15 +40,15 @@ public class Order {
     private Timestamp paymentTime;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "review_id")
+    @JoinColumn(name = "review_id_fk")
     private Review review;
 
     @ManyToOne
-    @JoinColumn(name = "waiter_id", nullable = false)
+    @JoinColumn(name = "waiter_id_fk", nullable = false)
     private Waiter waiter;
 
     @ManyToOne
-    @JoinColumn(name = "table_id", nullable = false)
+    @JoinColumn(name = "table_id_fk", nullable = false)
     private Table table;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)

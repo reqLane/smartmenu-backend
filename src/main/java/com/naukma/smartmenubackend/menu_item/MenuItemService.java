@@ -28,14 +28,14 @@ public class MenuItemService {
         if (isNullOrEmpty(menuItemDTO.name())
                 || isNullOrEmpty(menuItemDTO.description())
                 || menuItemDTO.price() == null
-                || isNullOrEmpty(menuItemDTO.imageURL()))
+                || isNullOrEmpty(menuItemDTO.imageUrl()))
             throw new InvalidMenuItemDataException("MENU ITEM REQUIRED FIELD IS EMPTY");
 
         MenuItem menuItem = new MenuItem(
                 menuItemDTO.name(),
                 menuItemDTO.description(),
                 menuItemDTO.price(),
-                menuItemDTO.imageURL()
+                menuItemDTO.imageUrl()
         );
 
         menuItem = menuItemRepo.save(menuItem);
@@ -52,8 +52,8 @@ public class MenuItemService {
             menuItem.setDescription(menuItem.getDescription());
         if (menuItemDTO.price() != null)
             menuItem.setPrice(menuItemDTO.price());
-        if (!isNullOrEmpty(menuItemDTO.imageURL()))
-            menuItem.setImageUrl(menuItemDTO.imageURL());
+        if (!isNullOrEmpty(menuItemDTO.imageUrl()))
+            menuItem.setImageUrl(menuItemDTO.imageUrl());
 
         menuItem = menuItemRepo.save(menuItem);
         return DTOMapper.toDTO(menuItem);

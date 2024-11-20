@@ -37,7 +37,7 @@ public class WaiterService {
         Waiter waiter = findById(waiterId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("WAITER ID-%d NOT FOUND TO UPDATE", waiterId)));
 
-        if (isNullOrEmpty(waiterDTO.name()))
+        if (!isNullOrEmpty(waiterDTO.name()))
             waiter.setName(waiterDTO.name());
 
         waiter = waiterRepo.save(waiter);
