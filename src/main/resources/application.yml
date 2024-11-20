@@ -4,7 +4,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: pass
-    url: jdbc:mysql://localhost:3306/smartmenu
+    url: jdbc:mysql://localhost:3306/smartmenu_db
     username: root
   jpa:
     open-in-view: true

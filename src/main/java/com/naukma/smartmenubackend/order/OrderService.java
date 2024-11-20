@@ -74,6 +74,8 @@ public class OrderService {
     public OrderDTO payOrder(Long orderId) {
         Order order = findById(orderId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("ORDER ID-%d NOT FOUND TO PAY", orderId)));
+        if (order.getStatus() != OrderStatus.PENDING && order.getStatus() != OrderStatus.COOKED)
+            throw new InvalidOrderDataException(String.format("ORDER ID-%d IS %s, CAN'T PAY FOR IT", orderId, order.getStatus()));
 
         order.setPaymentTime(new Timestamp(System.currentTimeMillis()));
         order.setStatus(OrderStatus.COMPLETED);
